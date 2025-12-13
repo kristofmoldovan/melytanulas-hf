@@ -76,9 +76,9 @@ Before submitting your project, ensure you have completed the following steps.
 
 ### Project Information
 
-- **Selected Topic**: [Enter Topic Name Here, options: AnkleAlign, Legal Text Decoder, Bull-flag detector, End-of-trip delay prediction]
-- **Student Name**: [Enter Your Name Here]
-- **Aiming for +1 Mark**: [Yes/No]
+- **Selected Topic**: Bull-flag detector
+- **Student Name**: Kristóf Moldován
+- **Aiming for +1 Mark**: Yes
 
 ### Solution Description
 
@@ -87,6 +87,10 @@ Before submitting your project, ensure you have completed the following steps.
 ### Extra Credit Justification
 
 [If you selected "Yes" for Aiming for +1 Mark, describe here which specific part of your work (e.g., innovative model architecture, extensive experimentation, exceptional performance) you believe deserves an extra mark.]
+
+- Classification of continous timeseries
+- Measured the 2 class abilities
+- Incremental model development (Compared 4 minimal models)
 
 ### Docker Instructions
 
