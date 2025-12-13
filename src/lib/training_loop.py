@@ -4,9 +4,15 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import time
+import os
+from torch.utils.data import Dataset, DataLoader, random_split
+import torch.nn.functional as F
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-def train_model(model, train_loader, val_loader, tag="experiment", 
-                epochs=50, lr=0.001, device='cpu', early_stop_patience=10):
+def train_model(model, train_loader, val_loader, 
+                epochs=50, lr=0.001, device='cpu', early_stop_patience=10, save_path="best_model.pth"):
     """
     Trains a PyTorch model with Early Stopping and LR Scheduling.
     
@@ -14,12 +20,11 @@ def train_model(model, train_loader, val_loader, tag="experiment",
         model: The PyTorch model to train.
         train_loader: DataLoader for training data.
         val_loader: DataLoader for validation data.
-        tag (str): Suffix for the saved model file (e.g., 'fast_compact').
         epochs (int): Maximum number of epochs.
         lr (float): Initial learning rate.
         device (str): 'cuda' or 'cpu'.
         early_stop_patience (int): Epochs to wait for improvement before stopping.
-        
+        save_path (str): Path to save the best model weights.
     Returns:
         model: The model with the BEST weights loaded.
         history: Dictionary containing loss and accuracy curves.
@@ -42,9 +47,8 @@ def train_model(model, train_loader, val_loader, tag="experiment",
 
     best_val_loss = float('inf')
     early_stop_counter = 0
-    save_path = f"best_model_{tag}.pth"
-    
-    print(f"\n--- Starting Training: {tag} ---")
+
+    print(f"\n--- Starting Training {os.path.basename(save_path)}---")
     start_time = time.time()
 
     for epoch in range(epochs):

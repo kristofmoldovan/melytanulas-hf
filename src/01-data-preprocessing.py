@@ -10,8 +10,6 @@ import config
 
 logger = setup_logger()
 
-os.makedirs(OUTPUT_ROOT_PATH, exist_ok=True)
-
 def clean_timestamps_vectorized(series):
     """
     Vectorized function to handle mixed timestamp formats (Unix str & Date str).
@@ -238,7 +236,14 @@ def process_root_data_folder():
 
 if __name__ == "__main__":
     logger.info("Preprocessing data...")
+    STARTING_FOLDER = config.STARTING_FOLDER
+    OUTPUT_ROOT_PATH = config.OUTPUT_ROOT_PATH
+    TRIM_N = config.TRIM_N
+
+    os.makedirs(OUTPUT_ROOT_PATH, exist_ok=True)
+
     df = process_root_data_folder()
     df.head()
+    
     logger.info("Data preprocessing complete.")
 

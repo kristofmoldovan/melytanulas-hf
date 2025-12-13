@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import os
 import torch.nn.functional as F
+import config
 
 class FlagDataset(Dataset):
     def __init__(self, csv_file, target_length=1024):
@@ -15,12 +16,18 @@ class FlagDataset(Dataset):
         self.classes = ['Bearish Normal', 'Bearish Pennant', 'Bearish Wedge', 'Bullish Normal', 'Bullish Pennant', 'Bullish Wedge']
         self.class_to_idx = {cls_name: i for i, cls_name in enumerate(self.classes)}
 
+        self.use_cache = config.USE_CACHED_DATASET
+        self.cache = {} # CACHE
+
     def __len__(self):
         return len(self.data_frame)
 
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
             idx = idx.tolist()
+
+        if (self.use_cache) and idx in self.cache:
+            return self.cache[idx]
 
         # Load raw data
         file_path = self.data_frame.iloc[idx]['flag_prices_npy_full_path']
@@ -39,4 +46,9 @@ class FlagDataset(Dataset):
         label = self.class_to_idx[label_str]
 
         # RETURN IDX so we can find the raw file for debug purposes!
-        return seq, torch.tensor(label, dtype=torch.long), idx
+        result = (seq, torch.tensor(label, dtype=torch.long), idx)
+        
+        if self.use_cache:
+            self.cache[idx] = result
+            
+        return result
