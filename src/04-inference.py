@@ -159,7 +159,7 @@ def plot_density_inference(original_df, results_df, class_config):
             plt.axvspan(start_x, end_x, color=class_color, alpha=LAYER_ALPHA, ec=None)
 
         # 4. Formatting
-        plt.title(f"Inference Density: {class_name.upper()}\n(Darker = Overlaping flag intervals)")
+        plt.title(f"Inference Density: {class_name.upper()}\n(Darker = Overlapping flag intervals)")
         plt.xlabel("Time Index")
         plt.ylabel("Price")
         
