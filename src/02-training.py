@@ -51,6 +51,15 @@ def train():
     # Do the training
     #
 
+    #
+    # Printing paremeters
+    #
+
+    baseline_model = BaselineClassifier(num_classes=6) # We use the baseline model here
+    model = FlagClassifier(num_classes=6) # We use the bigger model here
+
+    print_model_size(baseline_model, name="Baseline Model")
+    print_model_size(model, name="Flag Classifier Model")
 
     # 1. Train the baseline model
 
@@ -58,6 +67,8 @@ def train():
     seed_everything(SEED) # <--- Reset state
 
     baseline_model = BaselineClassifier(num_classes=6) # We use the baseline model here
+    model = FlagClassifier(num_classes=6) # We use the bigger model here
+
     baseline_model, baseline_history = train_model(
         baseline_model, train_loader, val_loader,
         epochs=EPOCHS,
@@ -72,7 +83,7 @@ def train():
     #Resetting seed
     seed_everything(SEED) # <--- Reset state
 
-    model = FlagClassifier(num_classes=6) # We use the bigger model here
+    
     model, model_history = train_model(
         model, train_loader, val_loader,
         epochs=EPOCHS,
@@ -83,6 +94,12 @@ def train():
     )
     
     logger.info("Training complete.")
+
+
+def print_model_size(model, name="Model"):
+    # Count only parameters that require gradients (trainable)
+    param_count = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f"{name} parameters: {param_count:,}")
 
 if __name__ == "__main__":
     # Using config values

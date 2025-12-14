@@ -26,7 +26,7 @@ LEARNING_RATE = 0.001
 EPOCHS = 200 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 EARLY_STOP_PATIENCE = 10
-FLAG_TARGET_LENGTH = 512
+FLAG_TARGET_LENGTH = 512 # Model input length after interpolation, fixed for model
 
 
 RUN_ID = "latest" # Change if you want to keep earlier trained models (used in path for output, which is overwritten)
@@ -51,6 +51,13 @@ MODEL_LOAD_PATH = MODEL_SAVE_PATH # Path to the trained model file, you can use 
 BASELINE_LOAD_PATH = BASELINE_SAVE_PATH # Path to the baseline model file, you can use pretrained models here too if you want to skip training
 
 
+# --- CONFIGURATION FOR PREDICTION IN INFERENCE  ---
+
+PREDICT_INPUT_CSV = '/app/inference/EURUSD_5min_002.csv'  # Path to the CSV file containing data to predict on
+PREDICT_OUTPUT_CSV = f"/app/output/{RUN_ID}/inference_results.csv"  # Path to save inference results CSV
+WINDOW_SIZE = 512          # Will be interpolated to model input size, so you can search for any size of flags
+STRIDE = 10                 # Moving window stride
+CONFIDENCE_THRESHOLD = 0.55 # Only classify if softmax prob > 70%
 
 
 

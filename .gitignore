@@ -7,3 +7,4 @@ data/
 **.zip
 **plot**.png
 output/latest/
+!output/submission/**/*plot**.png
