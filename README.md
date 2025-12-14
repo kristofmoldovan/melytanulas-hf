@@ -37,7 +37,7 @@ I used the help of the Gemini 3 on the project for faster coding.
 Classification of continuous timeseries, which are imported by a .CSV format. The results and plotted images are exported in the output folder.
 (Documented in "05-Inference" notebook)
 
-The timeseries of moving window can be custom sized, so any size of flags can be searched. 🙂 (For using on custom data, see: config.py)
+The timeseries of moving window can be custom sized, so any size of flags can be searched. 🙂 (For using on own data see: config.py)
 
 Also added extra features supporting the whole process:
 - Incremental model development (Compared 3 minimal models and built a bigger one)
