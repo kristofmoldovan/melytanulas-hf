@@ -37,7 +37,7 @@ I used the help of the Gemini 3 on the project for faster coding.
 Classification of continuous timeseries, which are imported by a .CSV format. The results and plotted images are exported in the output folder.
 (Documented in "05-Inference" notebook)
 
-The timeseries of moving window can be custom sized, so any size of flags can be searched. 🙂 (For using on custom data, see: config.py)
+The timeseries of moving window can be custom sized, so any size of flags can be searched. 🙂 (For using on own data see: config.py)
 
 Also added extra features supporting the whole process:
 - Incremental model development (Compared 3 minimal models and built a bigger one)
@@ -121,8 +121,7 @@ docker run --rm --gpus all `
    dl-project *> .\log\run.log
 ```
 
-*   PWD is the repository folder
-*   All the listed volumes are used for mounting the folders in the repository.
+*   `${PWD}` is the repository folder. 
 *   The `> log/run.log 2>&1` part ensures that all output (standard output and errors) is saved to `log/run.log` on Linux. (On windows `*>` is used.)
 *   The container is configured to run every step (data preprocessing, training, evaluation, inference).
 
