@@ -8,25 +8,55 @@
 
 ### Solution Description
 
-[Provide a short textual description of the solution here. Explain the problem, the model architecture chosen, the training methodology, and the results.]
+The project addresses the problem of automating technical analysis by detecting specific chart patterns (Bull/Bear flags, Pennants, Wedges) in financial time-series data.
+
+**Model Architecture:**
+The solution utilizes 1D Convolutional Neural Networks (1D-CNNs), which are effective for extracting temporal features from sequential data.
+- **Baseline Model:** A shallow 1D-CNN used to establish a performance benchmark.
+- **Main Model (`FlagClassifier`):** A deeper 1D-CNN architecture designed to capture complex, hierarchical patterns in price movements.
+- **Input:** Price sequences are normalized and interpolated to a fixed length of 512 time steps.
+
+**Methodology:**
+The pipeline includes robust data preprocessing (loading, cleaning, splitting) and a supervised training loop implemented in PyTorch. Key training features include:
+- **Optimization:** Adam optimizer with CrossEntropyLoss.
+- **Regularization:** Early Stopping and Learning Rate Scheduling (ReduceLROnPlateau) to ensure convergence and prevent overfitting.
+- **Inference:** A sliding window approach is used to scan continuous time-series data for patterns, allowing for detection across various timeframes.
+
+**Results:**
+The model demonstrates strong performance in distinguishing between the primary market directions (Bullish vs. Bearish). While differentiating between specific sub-types (e.g., Pennant vs. Wedge) presents a greater challenge due to morphological similarities, the system effectively highlights potential pattern occurrences in unseen data using confidence-based density plots.
+
+
+### Disclaimer
+I used the help of the Gemini 3 on the project for faster coding.
 
 ### Extra Credit Justification
 
 
-Main reason: Classification of continous timeseries exported in .CSV format and shown on plot images (Documented in "05-Inference" notebook)
+#### Main reason: 
 
+Classification of continous timeseries, which are imported by a .CSV format. The results and plotted images are exported in the output folder.
+(Documented in "05-Inference" notebook)
+
+The timeseries of moving window can be custom sized, so any size of flags can be searched 🙂
 
 Also added extra features supporting the whole process:
 - Incremental model development (Compared 3 minimal models and built a bigger one)
   - Documented in 02-Model-building notebook
 - Implemented optional cached Data Loading for fast training (set by default in config.py, uses ~700MB of RAM)
-- Implemented prediction on moving window of any continous timeseries coming from the 
-  - Documented in 05-Inference notebook
-  - The window can be custom sized, so any size of flags can be searched 🙂
+- Made a possible explaination of the low scores: Flags are too similar in different labels. (Documented in 04-Eval-Explaination.ipynb notebook) [See Similarity Examples](#similarity-examples)
 - Automatic export of plot images into the output folder during the whole process
 - Measured Bullish vs. Bearish capabilities (Examined in "04-Eval-Explaination" notebook)
   - I was assuming the model can differentiate well between "Bearish" and "Bullish" main groups, and the low scores are coming from classifying the subgroups. (Normal, Pennant, Wedge). I examined what if there was only 2 main groups.
   - Turned out this way the model performs better, the source of the original low scores is coming from "too similar" data in Normal, Pennant and Wedge groups, while the Bearish <-> Bullish feature is well recognized.
+
+#### Similarity Examples <a name="similarity-examples"></a>
+
+<details>
+<summary>Click to expand similarity examples</summary>
+
+![Similarity Examples](similarity_examples.png)
+
+</details>
 
 ### Docker Instructions
 
@@ -66,9 +96,6 @@ A `processed` folder will be created next to the `raw` folder when data processi
 
 **To capture the logs for submission (required), redirect the output to a file:**
 
-Assuming that PWD is the repository folder, and data folder is in the right format, then:
-
-
 On Linux:
 
 ```bash
@@ -93,8 +120,8 @@ docker run --rm --gpus all `
    dl-project *> .\log\run.log
 ```
 
-*   Replace `${PWD}/data"` with a path to a **PARENT FOLDER** containing your dataset on your host machine that meets the [Data preparation requirements](#data-preparation).
-*   Replace all the other listed volumes mounting the folders in the repository.
+*   PWD is the repository folder
+*   All the listed volumes are used for mounting the folders in the repository.
 *   The `> log/run.log 2>&1` part ensures that all output (standard output and errors) is saved to `log/run.log` on Linux. (On windows `*>` is used.)
 *   The container is configured to run every step (data preprocessing, training, evaluation, inference).
 
@@ -140,3 +167,4 @@ The repository is structured as follows:
     - `requirements.txt`: List of Python dependencies required for the project.
     - `README.md`: Project documentation and instructions.
     - `run.sh`: Running the whole perparation-training-evaluation-inference pipeline
+    - `similarity_examples.png`: An image showing the similar flags with different labels. Could be the reason of lower accuracy.
