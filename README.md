@@ -121,8 +121,7 @@ docker run --rm --gpus all `
    dl-project *> .\log\run.log
 ```
 
-*   PWD is the repository folder
-*   All the listed volumes are used for mounting the folders in the repository.
+*   `${PWD}` is the repository folder. 
 *   The `> log/run.log 2>&1` part ensures that all output (standard output and errors) is saved to `log/run.log` on Linux. (On windows `*>` is used.)
 *   The container is configured to run every step (data preprocessing, training, evaluation, inference).
 
