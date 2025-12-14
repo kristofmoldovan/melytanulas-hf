@@ -55,20 +55,12 @@ def train():
     # Printing paremeters
     #
 
-    baseline_model = BaselineClassifier(num_classes=6) # We use the baseline model here
-    model = FlagClassifier(num_classes=6) # We use the bigger model here
-
-    print_model_size(baseline_model, name="Baseline Model")
-    print_model_size(model, name="Flag Classifier Model")
-
     # 1. Train the baseline model
 
     #Resetting seed
     seed_everything(SEED) # <--- Reset state
 
     baseline_model = BaselineClassifier(num_classes=6) # We use the baseline model here
-    model = FlagClassifier(num_classes=6) # We use the bigger model here
-
     baseline_model, baseline_history = train_model(
         baseline_model, train_loader, val_loader,
         epochs=EPOCHS,
@@ -83,7 +75,7 @@ def train():
     #Resetting seed
     seed_everything(SEED) # <--- Reset state
 
-    
+    model = FlagClassifier(num_classes=6) # We use the bigger model here
     model, model_history = train_model(
         model, train_loader, val_loader,
         epochs=EPOCHS,
@@ -94,6 +86,7 @@ def train():
     )
     
     logger.info("Training complete.")
+
 
 
 def print_model_size(model, name="Model"):

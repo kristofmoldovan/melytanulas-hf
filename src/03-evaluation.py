@@ -101,7 +101,7 @@ def plot_comparison(histories):
     plt.figure(figsize=(12, 5))
 
     # --- Plot Loss ---
-    plt.subplot(1, 2, 1)
+    #plt.subplot(1, 2, 1)
     for name, hist in histories.items():
         # Plot Validation Loss (Solid line)
         plt.plot(hist['val_loss'], label=f"{name} Val", linestyle='-')
@@ -115,17 +115,17 @@ def plot_comparison(histories):
     plt.grid(True, alpha=0.3)
 
     # --- Plot Accuracy ---
-    plt.subplot(1, 2, 2)
-    for name, hist in histories.items():
-        plt.plot(hist['val_acc'], label=f"{name} Val", linestyle='-')
+    #plt.subplot(1, 2, 2)
+    #for name, hist in histories.items():
+        #plt.plot(hist['val_acc'], label=f"{name} Val", linestyle='-')
         # Optional: Plot Train Acc if you want to check overfitting
         # plt.plot(hist['train_acc'], label=f"{name} Train", linestyle='--', alpha=0.5)
 
-    plt.title("Accuracy Curves (Higher is better)")
-    plt.xlabel("Epochs")
-    plt.ylabel("Accuracy")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
+   #plt.title("Accuracy Curves (Higher is better)")
+    #plt.xlabel("Epochs")
+    #plt.ylabel(":")
+    #plt.legend()
+    #plt.grid(True, alpha=0.3)
 
     plt.tight_layout()
     plt.show()

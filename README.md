@@ -1,77 +1,3 @@
-# Deep Learning Class (VITMMA19) Project Work template
-
-[Complete the missing parts and delete the instruction parts before uploading.]
-
-## Submission Instructions
-
-[Delete this entire section after reading and following the instructions.]
-
-### Project Levels
-
-**Basic Level (for signature)**
-*   Containerization
-*   Data acquisition and analysis
-*   Data preparation
-*   Baseline (reference) model
-*   Model development
-*   Basic evaluation
-
-**Outstanding Level (aiming for +1 mark)**
-*   Containerization
-*   Data acquisition and analysis
-*   Data cleansing and preparation
-*   Defining evaluation criteria
-*   Baseline (reference) model
-*   Incremental model development
-*   Advanced evaluation
-*   ML as a service (backend) with GUI frontend
-*   Creative ideas, well-developed solutions, and exceptional performance can also earn an extra grade (+1 mark).
-
-### Data Preparation
-
-**Important:** You must provide a script (or at least a precise description) of how to convert the raw database into a format that can be processed by the scripts.
-* The scripts should ideally download the data from there or process it directly from the current sharepoint location.
-* Or if you do partly manual preparation, then it is recommended to upload the prepared data format to a shared folder and access from there.
-
-[Describe the data preparation process here]
-
-### Logging Requirements
-
-The training process must produce a log file that captures the following essential information for grading:
-
-1.  **Configuration**: Print the hyperparameters used (e.g., number of epochs, batch size, learning rate).
-2.  **Data Processing**: Confirm successful data loading and preprocessing steps.
-3.  **Model Architecture**: A summary of the model structure with the number of parameters (trainable and non-trainable).
-4.  **Training Progress**: Log the loss and accuracy (or other relevant metrics) for each epoch.
-5.  **Validation**: Log validation metrics at the end of each epoch or at specified intervals.
-6.  **Final Evaluation**: Result of the evaluation on the test set (e.g., final accuracy, MAE, F1-score, confusion matrix).
-
-The log file must be uploaded to `log/run.log` to the repository. The logs must be easy to understand and self explanatory. 
-Ensure that `src/utils.py` is used to configure the logger so that output is directed to stdout (which Docker captures).
-
-### Submission Checklist
-
-Before submitting your project, ensure you have completed the following steps.
-**Please note that the submission can only be accepted if these minimum requirements are met.**
-
-- [X] **Project Information**: Filled out the "Project Information" section (Topic, Name, Extra Credit).
-- [ ] **Solution Description**: Provided a clear description of your solution, model, and methodology.
-- [X] **Extra Credit**: If aiming for +1 mark, filled out the justification section.
-- [X] **Data Preparation**: Included a script or precise description for data preparation.
-- [X] **Dependencies**: Updated `requirements.txt` with all necessary packages and specific versions.
-- [X] **Configuration**: Used `src/config.py` for hyperparameters and paths, contains at least the number of epochs configuration variable.
-- [ ] **Logging**:
-    - [ ] Log uploaded to `log/run.log`
-    - [ ] Log contains: Hyperparameters, Data preparation and loading confirmation, Model architecture, Training metrics (loss/acc per epoch), Validation metrics, Final evaluation results, Inference results.
-- [ ] **Docker**:
-    - [X] `Dockerfile` is adapted to your project needs.
-    - [X] Image builds successfully (`docker build -t dl-project .`).
-    - [X] Container runs successfully with data mounted (`docker run ...`).
-    - [X] The container executes the full pipeline (preprocessing, training, evaluation).
-- [ ] **Cleanup**:
-    - [X] Removed unused files.
-    - [ ] **Deleted this "Submission Instructions" section from the README.**
-
 ## Project Details
 
 ### Project Information
@@ -119,24 +45,31 @@ docker build -t dl-project .
 To run the solution, use the following command. You must mount the directory to `/app/data` inside the container.
 
 Also mount the following volumes from the root of the repository:
-`data` -> `/app/data` - Data folder in the below described format
-`inference` -> `/app/inference`- The folder including a timeseries which will be classified on a moving window by the model. The path of this .CSV must be set in the config.py file. (It is already set for the repository folder by default)
-`output` -> `/app/output` - The folder will contain these in the end of process: models, model training logs, plots, prediction of inference CSV file
-`src` -> `/app/src`
-`notebook` -> `/app/notebook`
+- `data` -> `/app/data` - Data folder in the below described format
+- `inference` -> `/app/inference`- The folder including a timeseries which will be classified on a moving window by the model. The path of - this .CSV must be set in the config.py file. (It is already set for the repository folder by default)
+- `output` -> `/app/output` - The folder will contain these in the end of process: models, model training logs, plots, prediction of inference CSV file
+- `src` -> `/app/src`
+- `notebook` -> `/app/notebook`
 
-**Important!** The data folder must be in this format:
+#### Data Preparation
+
+**Important!**
+
+**The script handles** the data download, but for manual download, the data folder must be in this format:
 - **`data/`**: Contains the source code for the machine learning pipeline.
     - `raw`: Folder containing the NEPTUN folders
       - `NEPTUN1`: Example NEPTUN folder containing a json and multiple csv files
         - `.json`: Obe json containing the labels
         - `.csv`: Multiple .CSV files containing the prices that were labeled in the json
 
-A `processed` folder will be created next to the `raw` folder when data processing has ran.
+A `processed` folder will be created next to the `raw` folder when data processing is done.
 
 **To capture the logs for submission (required), redirect the output to a file:**
 
-Assuming that PWD is the repository folder, and data folder is in the right format:
+Assuming that PWD is the repository folder, and data folder is in the right format, then:
+
+
+On Linux:
 
 ```bash
 docker run --rm --gpus all \
@@ -148,9 +81,24 @@ docker run --rm --gpus all \
   dl-project > log/run.log 2>&1
 ```
 
-*   Replace `/absolute/path/to/your/local/data` with a path to a **PARENT FOLDER** containing your dataset on your host machine that meets the [Data preparation requirements](#data-preparation).
-*   The `> log/run.log 2>&1` part ensures that all output (standard output and errors) is saved to `log/run.log`.
+For PowerShell:
+
+```
+docker run --rm --gpus all `
+   -v "${PWD}/data:/app/data" `
+   -v "${PWD}/inference:/app/inference" `
+   -v "${PWD}/output:/app/output" `
+   -v "${PWD}/src:/app/src" `
+   -v "${PWD}/notebook:/app/notebook" `
+   dl-project *> .\log\run.log
+```
+
+*   Replace `${PWD}/data"` with a path to a **PARENT FOLDER** containing your dataset on your host machine that meets the [Data preparation requirements](#data-preparation).
+*   Replace all the other listed volumes mounting the folders in the repository.
+*   The `> log/run.log 2>&1` part ensures that all output (standard output and errors) is saved to `log/run.log` on Linux. (On windows `*>` is used.)
 *   The container is configured to run every step (data preprocessing, training, evaluation, inference).
+
+
 
 
 ### File Structure and Functions
@@ -158,7 +106,8 @@ docker run --rm --gpus all \
 The repository is structured as follows:
 
 - **`src/`**: Contains the source code for the machine learning pipeline.
-    - `00-print-config.py`: Script to print configuration variables and model architectures for verification.
+    - `00a-print-config.py`: Script to print configuration variables and model architectures for verification.
+    - `00b-data-download.py`: Script to download and setup raw data from Google Drive.
     - `01-data-preprocessing.py`: Scripts for loading, cleaning, and preprocessing the raw data.
     - `02-training.py`: The main script for defining the model and executing the training loop.
     - `03-evaluation.py`: Scripts for evaluating the trained model on test data and generating metrics.
@@ -178,6 +127,13 @@ The repository is structured as follows:
     - `03-Training.ipynb`: Notebook for training the Baseline and the Built model
     - `04-Eval-Explaination.ipynb`: Notebook for measuring model metrics and comparing 
     - `05-Inference.ipynb`: Notebook for making predictions on "timestamp, close" csv data, demonstrating custom window size and visualizing the results
+
+- **`output/`**: Contains the output of a RUN ID set in config.py (plot images, model weights, histories and predictions)
+    - `submission`: Contains of the output of the last run before the submission.
+    - `latest`: Empty at submission. Will contain the output of next runs if config.py is not changed.
+
+- **`log/`**: Contains logs of the runs
+    - `submission.log`: The log of the last run before the submission.
 
 - **Root Directory**:
     - `Dockerfile`: Configuration file for building the Docker image with the necessary environment and dependencies.

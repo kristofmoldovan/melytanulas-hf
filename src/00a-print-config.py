@@ -27,16 +27,23 @@ def explain_config_var(var_name):
         "EARLY_STOP_PATIENCE": "Epochs to wait for validation loss improvement before stopping.",
         "FLAG_TARGET_LENGTH": "Fixed input sequence length (time steps) for the model.",
         "CSV_FILE": "Path to the processed metadata CSV file.",
-        "DATA_DIR": "Root directory for dataset storage.",
+        "DATA_DIR": "Root directory for dataset storage, used for training",
         "MODEL_SAVE_PATH": "Destination path for saving the best FlagClassifier weights.",
         "BASELINE_SAVE_PATH": "Destination path for saving the best BaselineClassifier weights.",
-        "STARTING_FOLDER": "Source folder containing raw JSON/CSV data.",
+        "STARTING_FOLDER": "Source folder containing raw data with folders containing csv and json files.",
         "OUTPUT_ROOT_PATH": "Target folder for processed data artifacts.",
         "TRIM_N": "Character count to trim from filenames during preprocessing.",
         "HEADLESS_PLOT": "Toggle for running Matplotlib without a GUI.",
         "PLOT_OUTPUT_FOLDER": "Directory for saving generated plots.",
         "BASELINE_TRAINING_HISTORY_PATH": "CSV path for baseline training metrics.",
-        "MODEL_TRAINING_HISTORY_PATH": "CSV path for main model training metrics."
+        "MODEL_TRAINING_HISTORY_PATH": "CSV path for main model training metrics.",
+        "MODEL_LOAD_PATH": "Path to the trained FlagClassifier model weights for inference.",
+        "BASELINE_LOAD_PATH": "Path to the trained BaselineClassifier model weights for inference",
+        "PREDICT_INPUT_CSV": "Input CSV file path for inference predictions.",
+        "PREDICT_OUTPUT_CSV": "Output CSV file path for inference results.",
+        "WINDOW_SIZE": "Size of the sliding window for inference.",
+        "STRIDE": "Step size for moving the sliding window during inference.",
+        "CONFIDENCE_THRESHOLD": "Minimum probability for classifying a detected flag during inference."
     }
     return explanations.get(var_name, "Configuration setting.")
 
@@ -78,7 +85,6 @@ def print_model_info():
         logger.info(f"--- {name} ---")
         logger.info(f"Total Trainable Parameters: {params:,}")
         logger.info(f"Description: {description}")
-        logger.info(f"Architecture:\n{model}\n")
 
 if __name__ == "__main__":
     print_config_variables()

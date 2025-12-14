@@ -25,13 +25,13 @@ BATCH_SIZE = 256
 LEARNING_RATE = 0.001
 EPOCHS = 200 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-EARLY_STOP_PATIENCE = 10
+EARLY_STOP_PATIENCE = 20
 FLAG_TARGET_LENGTH = 512 # Model input length after interpolation, fixed for model
 
 
 RUN_ID = "latest" # Change if you want to keep earlier trained models (used in path for output, which is overwritten)
 # Paths
-DATA_DIR = OUTPUT_ROOT_PATH # Can be modified if needed, but structure must be the same
+DATA_DIR = OUTPUT_ROOT_PATH # Path to processed data that training is using (Can be modified if needed)
 MODEL_SAVE_PATH = f"/app/output/{RUN_ID}/model.pth" # Path to save model
 BASELINE_SAVE_PATH = f"/app/output/{RUN_ID}/baseline_model.pth" # Path to save baseline model
 

@@ -10,3 +10,4 @@ torchvision==0.18.0
 jupyterlab==4.2.1
 torchmetrics==1.8.2
 tqdm==4.67.1
+gdown==5.2.0
