@@ -25,7 +25,7 @@ BATCH_SIZE = 256
 LEARNING_RATE = 0.001
 EPOCHS = 200 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-EARLY_STOP_PATIENCE = 20
+EARLY_STOP_PATIENCE = 30
 FLAG_TARGET_LENGTH = 512 # Model input length after interpolation, fixed for model
 
 
