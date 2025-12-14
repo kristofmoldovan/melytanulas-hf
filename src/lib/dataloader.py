@@ -10,11 +10,13 @@ import torch.nn.functional as F
 import config
 
 class FlagDataset(Dataset):
-    def __init__(self, csv_file, target_length=1024):
+    def __init__(self, csv_file, target_length=1024, return_idx=True):
         self.data_frame = pd.read_csv(csv_file)
         self.target_length = target_length
         self.classes = ['Bearish Normal', 'Bearish Pennant', 'Bearish Wedge', 'Bullish Normal', 'Bullish Pennant', 'Bullish Wedge']
         self.class_to_idx = {cls_name: i for i, cls_name in enumerate(self.classes)}
+
+        self.return_idx = return_idx
 
         self.use_cache = config.USE_CACHED_DATASET
         self.cache = {} # CACHE
@@ -46,7 +48,10 @@ class FlagDataset(Dataset):
         label = self.class_to_idx[label_str]
 
         # RETURN IDX so we can find the raw file for debug purposes!
-        result = (seq, torch.tensor(label, dtype=torch.long), idx)
+        if self.return_idx:
+            result = (seq, torch.tensor(label, dtype=torch.long), idx)
+        else:
+            result = (seq, torch.tensor(label, dtype=torch.long))
         
         if self.use_cache:
             self.cache[idx] = result

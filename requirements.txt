@@ -8,3 +8,4 @@ seaborn==0.13.2
 torch==2.3.0
 torchvision==0.18.0
 jupyterlab==4.2.1
+torchmetrics==1.8.2

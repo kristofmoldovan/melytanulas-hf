@@ -63,7 +63,8 @@ def train():
         epochs=EPOCHS,
         device=DEVICE,
         early_stop_patience=EARLY_STOP_PATIENCE,
-        save_path=BASELINE_SAVE_PATH
+        save_path=BASELINE_SAVE_PATH,
+        history_save_path=config.BASELINE_TRAINING_HISTORY_PATH
     )
 
     # 2. Train the hopefully better model
@@ -77,7 +78,8 @@ def train():
         epochs=EPOCHS,
         device=DEVICE,
         early_stop_patience=EARLY_STOP_PATIENCE,
-        save_path=MODEL_SAVE_PATH
+        save_path=MODEL_SAVE_PATH,
+        history_save_path=config.MODEL_TRAINING_HISTORY_PATH
     )
     
     logger.info("Training complete.")

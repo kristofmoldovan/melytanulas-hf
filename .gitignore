@@ -2,6 +2,8 @@ local-notes.txt
 **/__pycache__/
 **/*.pyc
 data/
-notebook/.ipynb_checkpoints
-notebook/.Trash-0
+**/.ipynb_checkpoints
+**/.Trash-0
 **.zip
+**plot**.png
+output/latest/

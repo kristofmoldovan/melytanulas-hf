@@ -1,8 +1,8 @@
 import torch
 import os
 from datetime import datetime
+import matplotlib.pyplot as plt
 
-# Configuration settings as an example
 
 
 # --- Seed ---
@@ -11,7 +11,7 @@ SEED = 42
 # --- Preprocessing Configuration ---
 
 STARTING_FOLDER = '/app/data/raw' # The main folder containing child folders (NEPTUN codes)
-OUTPUT_ROOT_PATH = "/app/data/processed"
+OUTPUT_ROOT_PATH = "/app/data/processed" # Root folder for processed data output
 
 
 
@@ -23,31 +23,39 @@ DATA_SPLIT_RATIO = [0.7, 0.2, 0.1] # Train, Val, Test split ratios, must add up 
 
 BATCH_SIZE = 256
 LEARNING_RATE = 0.001
-EPOCHS = 200 # 200
+EPOCHS = 200 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 EARLY_STOP_PATIENCE = 10
 FLAG_TARGET_LENGTH = 512
 
 
-#
-RUN_ID = "1" # Change if you want to keep earlier trained models (otherwise the the same path is used and overwritten)
+RUN_ID = "latest" # Change if you want to keep earlier trained models (used in path for output, which is overwritten)
 # Paths
 DATA_DIR = OUTPUT_ROOT_PATH # Can be modified if needed, but structure must be the same
-MODEL_SAVE_PATH = f"/app/trained_models/{RUN_ID}/model.pth"
-BASELINE_SAVE_PATH = f"/app/trained_models/{RUN_ID}/baseline_model.pth"
+MODEL_SAVE_PATH = f"/app/output/{RUN_ID}/model.pth" # Path to save model
+BASELINE_SAVE_PATH = f"/app/output/{RUN_ID}/baseline_model.pth" # Path to save baseline model
 
+MODEL_TRAINING_HISTORY_PATH = f"/app/output/{RUN_ID}/model_history.csv" # Path to save model training history CSV
+BASELINE_TRAINING_HISTORY_PATH = f"/app/output/{RUN_ID}/baseline_history.csv" # Path to save baseline training history CSV
+
+
+
+HEADLESS_PLOT = True # If True, saves plots to disk instead of opening a window
+PLOT_OUTPUT_FOLDER = f"/app/output/{RUN_ID}/plots" # Where to save training/validation plots, only used if HEADLESS_PLOT is True
 
 
 
 # --- CONFIGURATION FOR EVALUATION & INFERENCE ---
 
-MODEL_LOAD_PATH = MODEL_SAVE_PATH # Path to the trained model file, you can use pretrained models here too
-BASELINE_LOAD_PATH = BASELINE_SAVE_PATH # Path to the baseline model file, you can use pretrained models here too
+MODEL_LOAD_PATH = MODEL_SAVE_PATH # Path to the trained model file, you can use pretrained models here too if you want to skip training
+BASELINE_LOAD_PATH = BASELINE_SAVE_PATH # Path to the baseline model file, you can use pretrained models here too if you want to skip training
+
 
 
 
 
 # --- Dont change these ---
+CLASS_LABELS = ['Bearish Normal', 'Bearish Pennant', 'Bearish Wedge', 'Bullish Normal', 'Bullish Pennant', 'Bullish Wedge']
 TRIM_N = 9 # Number of characters to trim from the start of filenames (needed because of labeling app export format)
 CSV_FILE = os.path.join(OUTPUT_ROOT_PATH, 'consolidated_labels.csv')  # Path to the consolidated CSV file (it contains the labels and their data)
 

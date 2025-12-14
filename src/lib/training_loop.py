@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def train_model(model, train_loader, val_loader, 
-                epochs=50, lr=0.001, device='cpu', early_stop_patience=10, save_path="best_model.pth"):
+                epochs=50, lr=0.001, device='cpu', early_stop_patience=10, save_path="best_model.pth", history_save_path="training_history.csv"):
     """
     Trains a PyTorch model with Early Stopping and LR Scheduling.
     
@@ -25,6 +25,7 @@ def train_model(model, train_loader, val_loader,
         device (str): 'cuda' or 'cpu'.
         early_stop_patience (int): Epochs to wait for improvement before stopping.
         save_path (str): Path to save the best model weights.
+        history_save_path (str): Path to save training history CSV.
     Returns:
         model: The model with the BEST weights loaded.
         history: Dictionary containing loss and accuracy curves.
@@ -130,6 +131,10 @@ def train_model(model, train_loader, val_loader,
     duration = time.time() - start_time
     print(f"Training Complete. Best Val Loss: {best_val_loss:.4f}. Time: {duration:.0f}s")
     
+    # Save training history to CSV
+    history_df = pd.DataFrame(history)
+    history_df.to_csv(history_save_path)
+
     # Load best weights so the returned model is optimized
     model.load_state_dict(torch.load(save_path))
     
