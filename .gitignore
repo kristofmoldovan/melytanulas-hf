@@ -5,7 +5,3 @@ data/
 **/.ipynb_checkpoints
 **/.Trash-0
 **.zip
-**plot**.png
-output/latest/*
-!output/submission/**/*plot**.png
-!output/latest/the output will appear here by default.txt
