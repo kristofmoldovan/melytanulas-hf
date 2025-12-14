@@ -53,7 +53,7 @@ Also added extra features supporting the whole process:
 #### Similarity Examples <a name="similarity-examples"></a>
 
 <details>
-<summary>Click to expand similarity examples</summary>
+<summary><strong>👀 Click to reveal: Why is classification challenging? (Similarity Examples)</strong></summary>
 
 ![Similarity Examples](similarity_examples.png)
 
